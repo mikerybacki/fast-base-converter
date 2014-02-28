@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="bases">
+	    <item>2</item>
+	    <item>8</item>
+	    <item>10</item>
+	    <item>16</item>
+    </string-array>
+    
+    <string-array name="buttons">
+	<!-- Row 1 -->
+	    <item>7</item>
+	    <item>8</item>
+	    <item>9</item>
+	    <item>F</item>
+    <!-- Row 2 -->
+	    <item>4</item>
+	    <item>5</item>
+	    <item>6</item>
+	    <item>E</item>
+    <!-- Row 3 -->
+	    <item>1</item>
+	    <item>2</item>
+	    <item>3</item>
+	    <item>D</item>
+    <!-- Row 4 -->
+	    <item>0</item>
+	    <item>A</item>
+	    <item>B</item>
+	    <item>C</item>
+    <!-- Row 5 -->
+	    <item>@string/button_dummy</item>
+	    <item>@string/button_dummy</item>
+	    <item>@string/button_delete</item>
+	    <item>@string/button_clear</item>
+	</string-array>
+</resources>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:focusable="false"
+	android:clickable="false"
+	android:focusableInTouchMode="false"
+    >
+    <ImageButton 
+	         android:id="@+id/imageButtonInside"
+	         android:background="@layout/gridselector"
+	         android:layout_width="match_parent"
+	         android:layout_height="match_parent"
+	         android:gravity="center"
+	         android:visibility="gone"
+	         android:scaleType="centerInside"
+	         android:padding="@dimen/imagebutton_padding"
+	/>
+    <Button 
+		android:id="@+id/textInside"
+		android:background="@layout/gridselector"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+	    android:singleLine="true"
+	    android:textColor="@color/button_text"
+	    android:typeface="sans"
+	    android:focusable="false"
+		android:clickable="false"
+        />
+</RelativeLayout>
