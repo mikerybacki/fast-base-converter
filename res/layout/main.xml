@@ -74,7 +74,7 @@
 		        android:id="@+id/spinnerbasefrom"
 		        android:layout_width="wrap_content"
 		        android:layout_height="@dimen/spinner_height"
-		        android:entries="@array/bases" />
+		        android:entries="@array/basestrings" />
 			
 			<TextView
 		      	android:layout_width="wrap_content"
@@ -85,7 +85,7 @@
 		        android:id="@+id/spinnerbaseto"
 		        android:layout_width="wrap_content"
 		        android:layout_height="@dimen/spinner_height"
-		        android:entries="@array/bases" />
+		        android:entries="@array/basestrings" />
 	    
 	    </LinearLayout>
 	

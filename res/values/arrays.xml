@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="bases">
-	    <item>2</item>
+    <integer-array name="bases">
+        <item>2</item>
+	    <item>8</item>
+	    <item>10</item>
+	    <item>16</item>
+    </integer-array>
+    
+    <string-array name="basestrings">
+        <item>2</item>
 	    <item>8</item>
 	    <item>10</item>
 	    <item>16</item>

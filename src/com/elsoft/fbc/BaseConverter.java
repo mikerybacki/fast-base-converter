@@ -31,6 +31,8 @@ public class BaseConverter extends Activity {
 	private Spinner fromSpinner;
 	private TextView fromText;
 	private TextView toText;
+	private int fromBase;
+	private int toBase;
 
 	private String hex = "ABCDEF0123456789";
 	private	String dec = "0123456789";
@@ -96,40 +98,30 @@ public class BaseConverter extends Activity {
 		toText = (TextView) this.findViewById(R.id.textviewto);
 		
 		this.setDefaultValues();
+		
+		// Listener for setting from-base
 		fromSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int item, long longvalue) {
-				switch (item) {
-					case 0: updateFromDisplay(2);
-					break;
-					case 1: updateFromDisplay(8);
-					break;
-					case 2: updateFromDisplay(10);
-					break;
-					case 3: updateFromDisplay(16);
-					break;
-				}
+				fromBase = getApplicationContext().getResources().getIntArray(
+						R.array.bases)[item];
+				updateFromDisplay();
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// do nothing
 			}
 		});
+		
+		// Listener for setting to-base
 		toSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int item, long longvalue) {
-				switch (item) {
-					case 0: updateToDisplay(2);
-					break;
-					case 1: updateToDisplay(8);
-					break;
-					case 2: updateToDisplay(10);
-					break;
-					case 3: updateToDisplay(16);
-					break;
-				}
+				toBase = getApplicationContext().getResources().getIntArray(
+						R.array.bases)[item];
+				updateToDisplay();
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -139,11 +131,10 @@ public class BaseConverter extends Activity {
 	}
 	
 	private void writeDigit(String digit) {
-		int base = getFromBase();
-		if (base == 2 && bin.contains(digit) ||
-			base == 8 && oct.contains(digit) ||
-			base == 10 && dec.contains(digit) ||
-			base == 16 && hex.contains(digit) 
+		if (fromBase == 2 && bin.contains(digit) ||
+			fromBase == 8 && oct.contains(digit) ||
+			fromBase == 10 && dec.contains(digit) ||
+			fromBase == 16 && hex.contains(digit) 
 			)
 		{
 			if (getDisplayString().equals("0")) {
@@ -151,7 +142,7 @@ public class BaseConverter extends Activity {
 			} else {
 				String newValue = getDisplayString().concat(digit);
 				try {
-					Long.parseLong(newValue, base);
+					Long.parseLong(newValue, fromBase);
 					fromText.setText(newValue);
 				}
 				catch (java.lang.NumberFormatException exception) {
@@ -170,7 +161,7 @@ public class BaseConverter extends Activity {
 	}
 	
 	private void updateLogic() {
-		logic.setValue(getDisplayString(), getFromBase());
+		logic.setValue(getDisplayString(), fromBase);
 	}
 	
 	private void clearFromDisplay() {
@@ -208,8 +199,14 @@ public class BaseConverter extends Activity {
 	}
 
 	private void setDefaultValues() {
+		// Set spinner values and base values
 		fromSpinner.setSelection(2);
+		fromBase = getApplicationContext().getResources().getIntArray(
+				R.array.bases)[2];
 		toSpinner.setSelection(0);
+		toBase = getApplicationContext().getResources().getIntArray(
+				R.array.bases)[0];
+		
 		fromText.setText("0");
 		toText.setText("0");
 	}
@@ -221,26 +218,13 @@ public class BaseConverter extends Activity {
 		toTextScroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
 	}
 	
-	private void updateFromDisplay(int base) {
-		fromText.setText(logic.getValue(base));
-		scrollRight();
-	}
-	
-	private void updateToDisplay(int base) {
-		toText.setText(logic.getValue(base));
+	private void updateFromDisplay() {
+		fromText.setText(logic.getValue(fromBase));
 		scrollRight();
 	}
 	
 	private void updateToDisplay() {
-		toText.setText(logic.getValue(getToBase()));
+		toText.setText(logic.getValue(toBase));
 		scrollRight();
-	}
-	
-	private int getToBase() {
-		return Integer.parseInt((String) toSpinner.getSelectedItem());
-	}
-	
-	private int getFromBase() {
-		return Integer.parseInt((String) fromSpinner.getSelectedItem());
-	}
+	}	
 }
