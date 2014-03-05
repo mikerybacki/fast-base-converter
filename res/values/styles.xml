@@ -28,6 +28,7 @@
     <color name="button_normal">#AAAAAA</color>
     <color name="button_orange">#FF9900</color>
     <color name="button_red">#FF0000</color>
+    <color name="button_disabled_text">#DDDDDD</color>
     <color name="button_text">#000000</color>
     <color name="textfield_bg">#C4D4C4</color>
     <color name="textfield_text">#000000</color>

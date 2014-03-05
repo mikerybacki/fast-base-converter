@@ -1,11 +1,14 @@
 package com.elsoft.fbc;
 
+import java.util.Arrays;
+
 import com.elsoft.fbc.R;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,16 +37,11 @@ public class BaseConverter extends Activity {
 	private int fromBase;
 	private int toBase;
 
-	private String hex = "ABCDEF0123456789";
-	private	String dec = "0123456789";
-	private	String oct = "01234567";
-	private String bin = "01";
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.initUI();
-		logic = new BaseLogic();
+		logic = new BaseLogic(this.getApplicationContext());
 		GridView gridView = (GridView) this.findViewById(R.id.gridview1);
 		gridView.setAdapter(new ButtonAdapter(gridView, this, null));
 		gridView.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -104,9 +102,9 @@ public class BaseConverter extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int item, long longvalue) {
-				fromBase = getApplicationContext().getResources().getIntArray(
-						R.array.bases)[item];
+				fromBase = item;
 				updateFromDisplay();
+				disableNonbaseButtons();
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -119,8 +117,7 @@ public class BaseConverter extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int item, long longvalue) {
-				toBase = getApplicationContext().getResources().getIntArray(
-						R.array.bases)[item];
+				toBase = item;
 				updateToDisplay();
 			}
 			@Override
@@ -131,27 +128,22 @@ public class BaseConverter extends Activity {
 	}
 	
 	private void writeDigit(String digit) {
-		if (fromBase == 2 && bin.contains(digit) ||
-			fromBase == 8 && oct.contains(digit) ||
-			fromBase == 10 && dec.contains(digit) ||
-			fromBase == 16 && hex.contains(digit) 
-			)
-		{
-			if (getDisplayString().equals("0")) {
-				fromText.setText(digit);
-			} else {
-				String newValue = getDisplayString().concat(digit);
-				try {
-					Long.parseLong(newValue, fromBase);
-					fromText.setText(newValue);
-				}
-				catch (java.lang.NumberFormatException exception) {
-					Toast.makeText(getApplicationContext(), this.getApplicationContext().
-							getResources().getString(R.string.high_number), Toast.LENGTH_SHORT).show();	
-				}
+		if (getDisplayString().equals("0")) {
+			fromText.setText(digit);
+		} else {
+			String newValue = getDisplayString().concat(digit);
+			try {
+				int baseValue = getApplicationContext().getResources().
+						getIntArray(R.array.bases)[fromBase];
+				Long.parseLong(newValue, baseValue);
+				fromText.setText(newValue);
+			}
+			catch (java.lang.NumberFormatException exception) {
+				Toast.makeText(getApplicationContext(), this.getApplicationContext().
+						getResources().getString(R.string.high_number), Toast.LENGTH_SHORT).show();	
 			}
 		}
-	}	
+	}
 	
 	private void removeLastDigit() {
 		int length = fromText.getText().length();
@@ -201,14 +193,37 @@ public class BaseConverter extends Activity {
 	private void setDefaultValues() {
 		// Set spinner values and base values
 		fromSpinner.setSelection(2);
-		fromBase = getApplicationContext().getResources().getIntArray(
-				R.array.bases)[2];
+		// decimal
+		fromBase = 2;
 		toSpinner.setSelection(0);
-		toBase = getApplicationContext().getResources().getIntArray(
-				R.array.bases)[0];
+		// binary
+		toBase = 0;
 		
 		fromText.setText("0");
 		toText.setText("0");
+	}
+	
+	// Enable only buttons for a certain base 
+	private void disableNonbaseButtons() {
+		GridView gridView = (GridView) findViewById(R.id.gridview1);
+		ButtonAdapter adapter = (ButtonAdapter) gridView.getAdapter();
+		
+		Resources resourceGetter = getApplicationContext().getResources();
+		
+		String[] buttons = resourceGetter.getStringArray(R.array.buttons);
+		String[] basechars = resourceGetter.getStringArray(R.array.basechars);
+		String[] specialbuttons = { resourceGetter.getString(R.string.button_clear),
+				resourceGetter.getString(R.string.button_delete) };
+				
+		for(int index = 0; index < buttons.length ; index++) {
+			if (basechars[fromBase].contains(buttons[index]) || 
+				Arrays.asList(specialbuttons).contains(buttons[index])) {
+					adapter.setButtonEnabled(index, true);
+				} else
+				{
+					adapter.setButtonEnabled(index, false);
+				}
+			}
 	}
 	
 	private void scrollRight() {

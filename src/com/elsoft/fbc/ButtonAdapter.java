@@ -42,6 +42,32 @@ public class ButtonAdapter extends BaseAdapter {
 	public String getItem(int pos) {
 		return buttonText[pos];
 	}
+	
+	public void setButtonEnabled(int pos, boolean enabled) {
+		View convertView = gridView.getChildAt(pos);
+		convertView.setEnabled(enabled);
+		Button textButton = (Button) convertView.findViewById(R.id.textInside);
+		textButton.setEnabled(enabled);
+		if (enabled) {
+		textButton.setTextColor(mContext.getResources().getColor(
+				R.color.button_text));
+		} else {
+		textButton.setTextColor(mContext.getResources().getColor(
+				R.color.button_disabled_text));
+		}
+	}
+
+	@Override
+	public boolean areAllItemsEnabled()
+	{
+	    return false;
+	}
+
+	@Override
+	public boolean isEnabled(int position)
+	{
+		return (gridView.getChildAt(position).isEnabled());
+	}
 
 	@Override
 	public long getItemId(int pos) {
@@ -80,8 +106,9 @@ public class ButtonAdapter extends BaseAdapter {
 		// dummy button, do not display at all
 		} else if (buttonCodes[pos].equalsIgnoreCase(
 				mContext.getResources().getString(R.string.button_dummy))) {
+			convertView.setEnabled(false);
+			textButton.setEnabled(false);
 			textButton.setVisibility(Button.GONE);
-			imageButton.setVisibility(ImageButton.GONE);
 
 		// clear button, change name to clear button name
 		} else if (buttonCodes[pos].equalsIgnoreCase(
