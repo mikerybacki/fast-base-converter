@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.elsoft.fbc.R;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,14 +77,15 @@ public class ButtonAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
-		String[] buttonCodes = mContext.getResources().getStringArray(R.array.buttons);
+		Resources resourceGetter = mContext.getResources();
+		String[] buttonCodes = resourceGetter.getStringArray(R.array.buttons);
 		
 		// inflate the view
 		convertView = LayoutInflater.from(mContext).inflate(R.layout.button, null);
 
 		// set height for each button to 1/5th of gridview's height and exclude horizontal spacing
 		int buttonHeightPx = gridView.getHeight()/5 -  
-				(mContext.getResources().getDimensionPixelSize(R.dimen.gridview_verticalspacing));
+				(resourceGetter.getDimensionPixelSize(R.dimen.gridview_verticalspacing));
 		AbsListView.LayoutParams params = new AbsListView.LayoutParams(android.view.ViewGroup.
 				LayoutParams.MATCH_PARENT, buttonHeightPx);
 		convertView.setLayoutParams(params);
@@ -95,25 +97,25 @@ public class ButtonAdapter extends BaseAdapter {
 
 		// delete button, display image
 		if (buttonCodes[pos].equalsIgnoreCase(
-				mContext.getResources().getString(R.string.button_delete))) {
+				resourceGetter.getString(R.string.button_delete))) {
 			textButton.setVisibility(Button.GONE);
 			imageButton.setVisibility(ImageButton.VISIBLE);
 			// allow the GridView to capture ImageButton's clicks  
 			imageButton.setFocusable(false);
 			imageButton.setClickable(false);
-			imageButton.setImageDrawable(mContext.getResources().getDrawable(R.drawable.input_delete));
+			imageButton.setImageDrawable(resourceGetter.getDrawable(R.drawable.input_delete));
 		
 		// dummy button, do not display at all
 		} else if (buttonCodes[pos].equalsIgnoreCase(
-				mContext.getResources().getString(R.string.button_dummy))) {
+				resourceGetter.getString(R.string.button_dummy))) {
 			convertView.setEnabled(false);
 			textButton.setEnabled(false);
 			textButton.setVisibility(Button.GONE);
 
 		// clear button, change name to clear button name
 		} else if (buttonCodes[pos].equalsIgnoreCase(
-				mContext.getResources().getString(R.string.button_clear))) {
-			textButton.setText(mContext.getResources().getString(R.string.button_clear_text));
+				resourceGetter.getString(R.string.button_clear))) {
+			textButton.setText(resourceGetter.getString(R.string.button_clear_text));
 
 		// normal buttons
 		} else {

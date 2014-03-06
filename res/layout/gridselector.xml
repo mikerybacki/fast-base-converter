@@ -2,8 +2,7 @@
     <item
         android:state_pressed="true"
         android:state_enabled="true"
-        android:drawable="@color/button_orange" />
+        android:drawable="@layout/gradient_orange" />
     <item 
-        android:drawable="@android:color/background_light" />
- 
+        android:drawable="@layout/gradient_grey" />
  </selector>

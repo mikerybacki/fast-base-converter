@@ -23,11 +23,10 @@
     </style>
 
     <!-- Colors -->
-    <color name="button_blue">#0000FF</color>
-    <color name="button_green">#00FF00</color>
-    <color name="button_normal">#AAAAAA</color>
-    <color name="button_orange">#FF9900</color>
-    <color name="button_red">#FF0000</color>
+    <color name="button_grey_gradient1">#F2F2F2</color>
+    <color name="button_grey_gradient2">#D6D6D6</color>
+    <color name="button_orange_gradient1">#FF9900</color>
+    <color name="button_orange_gradient2">#FF7B00</color>
     <color name="button_disabled_text">#DDDDDD</color>
     <color name="button_text">#000000</color>
     <color name="textfield_bg">#C4D4C4</color>
