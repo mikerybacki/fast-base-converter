@@ -106,6 +106,8 @@
 		    android:stretchMode="columnWidth" 
 		    android:horizontalSpacing="@dimen/gridview_horizontalspacing"
 		    android:verticalSpacing="@dimen/gridview_verticalspacing"
+		    android:cacheColorHint="@android:color/transparent"
+		    android:listSelector="@android:color/transparent"
 		    />
 	</LinearLayout>
 </LinearLayout>
