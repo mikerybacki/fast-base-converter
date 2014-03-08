@@ -2,6 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="button_corner_radius">10dp</dimen>
     <dimen name="gridview_columnwidth">20dp</dimen>
     <dimen name="gridview_horizontalspacing">1dp</dimen>
     <dimen name="gridview_verticalspacing">1dp</dimen>
@@ -12,4 +13,5 @@
     <dimen name="textfield_padding">5dp</dimen>
     <dimen name="textfield_height">45dp</dimen>
     <dimen name="textfield_textsize">20sp</dimen>
+	<dimen name="ultra_thin">1px</dimen>
 </resources>

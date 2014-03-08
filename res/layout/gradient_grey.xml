@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
+    android:shape="rectangle">
     <gradient
 		android:startColor="@color/button_grey_gradient1"
 		android:endColor="@color/button_grey_gradient2"
 		android:angle="@integer/gradient_angle"
 		/>
+    <corners
+        android:radius="@dimen/button_corner_radius" />
+    <stroke
+        android:width="@dimen/ultra_thin"
+        android:color="@android:color/black"
+        />
 </shape>
