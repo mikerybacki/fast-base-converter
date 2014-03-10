@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="button_grey_gradient1">#F2F2F2</color>
+    <color name="button_grey_gradient2">#D6D6D6</color>
+	<color name="button_darkgrey_gradient1">#E8E8E8</color>
+    <color name="button_darkgrey_gradient2">#CECECE</color>
+    <color name="button_orange_gradient1">#FF9900</color>
+    <color name="button_orange_gradient2">#FF7B00</color>
+    <color name="button_red_gradient1">#FF9999</color>
+    <color name="button_red_gradient2">#d17d7d</color>
+    <color name="button_red2_gradient1">#EFBFBF</color>
+    <color name="button_red2_gradient2">#D3A9A9</color>
+    <color name="button_disabled_text">#D6D6D6</color>
+    <color name="button_text">#000000</color>
+    <color name="textfield_bg">#C4D4C4</color>
+    <color name="textfield_text">#000000</color>
+</resources>

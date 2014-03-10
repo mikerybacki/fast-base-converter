@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import com.elsoft.fbc.R;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +77,17 @@ public class ButtonAdapter extends BaseAdapter {
 		return 0;
 	}
 
+	// Apply a selector/drawable as a background for the button
+	@SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
+	private void setButtonSelector(View button, Drawable selector) {
+		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+			button.setBackgroundDrawable(selector);
+		} else {
+			button.setBackground(selector);
+		}
+	}
+	
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
 		Resources resourceGetter = mContext.getResources();
@@ -104,6 +117,7 @@ public class ButtonAdapter extends BaseAdapter {
 			imageButton.setFocusable(false);
 			imageButton.setClickable(false);
 			imageButton.setImageDrawable(resourceGetter.getDrawable(R.drawable.input_delete));
+			setButtonSelector(imageButton, resourceGetter.getDrawable(R.layout.gridselector_red2));
 		
 		// dummy button, do not display at all
 		} else if (buttonCodes[pos].equalsIgnoreCase(
@@ -112,14 +126,19 @@ public class ButtonAdapter extends BaseAdapter {
 			textButton.setEnabled(false);
 			textButton.setVisibility(Button.GONE);
 
-		// clear button, change name to clear button name
+		// clear button, change name to clear-button name, set red background
 		} else if (buttonCodes[pos].equalsIgnoreCase(
 				resourceGetter.getString(R.string.button_clear))) {
 			textButton.setText(resourceGetter.getString(R.string.button_clear_text));
-
+			setButtonSelector(textButton, resourceGetter.getDrawable(R.layout.gridselector_red));
+			
 		// normal buttons
 		} else {
 			textButton.setText(buttonText[pos]);
+			// set dark grey background for hexadecimal letter symbols
+			if (resourceGetter.getString(R.string.buttons_letters).contains(buttonCodes[pos])) {
+				setButtonSelector(textButton, resourceGetter.getDrawable(R.layout.gridselector_darkgrey));
+			}
 		}
 		return convertView;
 	}
