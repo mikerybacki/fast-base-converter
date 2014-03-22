@@ -1,5 +1,6 @@
 package com.elsoft.fbc.test;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -8,6 +9,7 @@ import com.elsoft.fbc.BaseLogic;
 import com.elsoft.fbc.R;
 
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 public class BaseLogicTest extends AndroidTestCase {
 
@@ -16,7 +18,7 @@ public class BaseLogicTest extends AndroidTestCase {
 	protected int indexOct;
 	protected int indexDec;
 	protected int indexHex;
-	protected long rndLong;
+	protected BigInteger rndLong;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -34,47 +36,99 @@ public class BaseLogicTest extends AndroidTestCase {
 		indexDec = bases.indexOf(10);
 		indexHex = bases.indexOf(16);
 
-		// setup random long for tests
+		// setup random biginteger for tests
 		Random random = new Random();
-		rndLong = random.nextLong();
+		rndLong = BigInteger.valueOf(random.nextLong() & 0x0111111111111111L);
+		rndLong = rndLong.add(BigInteger.valueOf(random.nextLong() & 0x0111111111111111L));
+		rndLong = rndLong.add(BigInteger.valueOf(random.nextLong() & 0x0111111111111111L));
 	}
 	
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
-	
+
 	/**
-	 * Test that value at output is the same (dec) value that is put in
+	 * Test that value at output (dec) is the same value that is put in
 	 */
-	public void testInputEqualsOutput() {
-		logic.setValue(rndLong);
-		assertEquals(Long.toString(rndLong), logic.getValue(indexDec));
+	public void testInputEqualsOutputDec() {
+		// binary value
+		doTest(2, 10);
+		// octal value
+		doTest(8, 10);
+		// dec value
+		doTest(10, 10);
+		// hex value
+		doTest(16, 10);
 	}
 	
 	/**
-	 * Test that bin output is correct
+	 * Test that value at output (bin) is the same value that is put in
 	 */
 	public void testInputEqualsOutputBin() {
-		logic.setValue(rndLong);
-		String hexValue = Long.toBinaryString(rndLong);
-		assertEquals(hexValue, logic.getValue(indexBin));
+		// binary value
+		doTest(2, 2);
+		// octal value
+		doTest(8, 2);
+		// dec value
+		doTest(10, 2);
+		// hex value
+		doTest(16, 2);
 	}
 	
 	/**
-	 * Test that oct output is correct
+	 * Test that value at output (oct) is the same value that is put in
 	 */
 	public void testInputEqualsOutputOct() {
-		logic.setValue(rndLong);
-		String hexValue = Long.toOctalString(rndLong);
-		assertEquals(hexValue, logic.getValue(indexOct));
+		// binary value
+		doTest(2, 8);
+		// octal value
+		doTest(8, 8);
+		// dec value
+		doTest(10, 8);
+		// hex value
+		doTest(16, 8);
 	}
 	
 	/**
-	 * Test that hex output is correct
+	 * Test that value at output (hex) is the same value that is put in
 	 */
 	public void testInputEqualsOutputHex() {
-		logic.setValue(rndLong);
-		String hexValue = Long.toHexString(rndLong);
-		assertEquals(hexValue, logic.getValue(indexHex).toLowerCase());
+		// binary value
+		doTest(2, 16);
+		// octal value
+		doTest(8, 16);
+		// dec value
+		doTest(10, 16);
+		// hex value
+		doTest(16, 16);
 	}
+	
+	/**
+	 * Private method for cross-testing different input/output bases
+	 */
+	private void doTest(int inputBase, int outputBase) {
+		switch (inputBase)
+		{
+			case 2: logic.setValue(rndLong.toString(inputBase), indexBin);
+			break;
+			case 8: logic.setValue(rndLong.toString(inputBase), indexOct);
+			break;
+			case 10:logic.setValue(rndLong.toString(inputBase), indexDec);
+			break;
+			case 16:logic.setValue(rndLong.toString(inputBase), indexHex);
+			break;
+		}
+		switch (outputBase)
+		{
+			case 2: assertEquals(rndLong.toString(outputBase), logic.getValue(indexBin));
+			break;
+			case 8: assertEquals(rndLong.toString(outputBase), logic.getValue(indexOct));
+			break;	
+			case 10:assertEquals(rndLong.toString(outputBase), logic.getValue(indexDec));
+			break;
+			case 16:assertEquals(rndLong.toString(outputBase), logic.getValue(indexHex));
+			break;
+		}
+	}
+	
 }

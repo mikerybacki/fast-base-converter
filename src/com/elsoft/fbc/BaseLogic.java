@@ -1,6 +1,6 @@
 package com.elsoft.fbc;
 
-import java.util.Locale;
+import java.math.BigInteger;
 
 import android.content.Context;
 
@@ -11,35 +11,20 @@ import android.content.Context;
 
 public class BaseLogic {
 
-	private long val;
+	private BigInteger value;
 	private Context mContext;
 	
 	public BaseLogic(Context context) { 
-		val = 0;
+		value = BigInteger.valueOf(0);
 		mContext = context;
 	}
 	
-	public void setValue(long value) {
-		val = value;
-	}
-	
 	public void setValue(String value, int baseIndex) {
-		val = Long.parseLong(value, getBaseValue(baseIndex));		
+		this.value = new BigInteger(value, getBaseValue(baseIndex));
 	}
 	
 	public String getValue(int baseIndex) {
-		String value = "0";
-		switch (getBaseValue(baseIndex)) {
-			case 2: value = Long.toBinaryString(val);
-			break;
-			case 8: value = Long.toOctalString(val);
-			break;
-			case 10: value = Long.toString(val);
-			break;
-			case 16: value = Long.toHexString(val).toUpperCase(Locale.getDefault());
-			break;
-		}
-		return value;
+		return value.toString(this.getBaseValue(baseIndex));
 	}
 	
 	// Get base value from base index

@@ -132,15 +132,11 @@ public class BaseConverter extends Activity {
 			fromText.setText(digit);
 		} else {
 			String newValue = getDisplayString().concat(digit);
-			try {
-				int baseValue = getApplicationContext().getResources().
-						getIntArray(R.array.bases)[fromBase];
-				Long.parseLong(newValue, baseValue);
-				fromText.setText(newValue);
-			}
-			catch (java.lang.NumberFormatException exception) {
+			if (newValue.length() > 255) {
 				Toast.makeText(getApplicationContext(), this.getApplicationContext().
-						getResources().getString(R.string.high_number), Toast.LENGTH_SHORT).show();	
+						getResources().getString(R.string.high_number), Toast.LENGTH_SHORT).show();
+			} else {
+				fromText.setText(newValue);
 			}
 		}
 	}
