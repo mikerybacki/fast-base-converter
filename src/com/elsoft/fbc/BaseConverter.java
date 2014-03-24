@@ -119,8 +119,9 @@ public class BaseConverter extends Activity {
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int item, long longvalue) {
 				fromBase = item;
-				setFromString(logic.getValue(toBase));
 				disableNonbaseButtons();
+				setFromString(logic.getValue(fromBase));
+				scrollRight();
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -137,6 +138,7 @@ public class BaseConverter extends Activity {
 					int item, long longvalue) {
 				toBase = item;
 				updateToString();
+				scrollRight();
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {

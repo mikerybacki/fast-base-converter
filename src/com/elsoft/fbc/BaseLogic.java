@@ -21,7 +21,12 @@ public class BaseLogic {
 	}
 	
 	public void setValue(String value, int baseIndex) {
-		this.value = new BigInteger(value, getBaseValue(baseIndex));
+		try {
+			this.value = new BigInteger(value, getBaseValue(baseIndex));
+		}
+		catch (NumberFormatException e) {
+			// do nothing, result of user action?
+		}
 	}
 	
 	@SuppressLint("DefaultLocale")
