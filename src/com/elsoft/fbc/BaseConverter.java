@@ -45,6 +45,9 @@ public class BaseConverter extends Activity {
 		GridView gridView = (GridView) this.findViewById(R.id.gridview1);
 		gridView.setAdapter(new ButtonAdapter(gridView, this, null));
 		gridView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			/**
+			 * Click listener for long clicks
+			 */
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
 				// long click on "delete" button
@@ -61,6 +64,10 @@ public class BaseConverter extends Activity {
 			
 		});
 		gridView.setOnItemClickListener(new OnItemClickListener() {
+			/**
+			 * Click listener for Grid View
+			 */
+			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				String[] buttonCodes = getApplicationContext().getResources().getStringArray(R.array.buttons);
 				// normal digit/letter button (are all a single character long)
@@ -99,6 +106,9 @@ public class BaseConverter extends Activity {
 		
 		// Listener for setting from-base
 		fromSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			/**
+			 * Click listener for From-Spinner
+			 */
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int item, long longvalue) {
@@ -114,6 +124,9 @@ public class BaseConverter extends Activity {
 		
 		// Listener for setting to-base
 		toSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			/**
+			 * Click listener for To-Spinner
+			 */
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int item, long longvalue) {

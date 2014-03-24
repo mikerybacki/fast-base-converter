@@ -1,7 +1,8 @@
 package com.elsoft.fbc;
 
 import java.math.BigInteger;
-
+import java.util.Locale;
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 /**
@@ -23,8 +24,9 @@ public class BaseLogic {
 		this.value = new BigInteger(value, getBaseValue(baseIndex));
 	}
 	
+	@SuppressLint("DefaultLocale")
 	public String getValue(int baseIndex) {
-		return value.toString(this.getBaseValue(baseIndex));
+		return value.toString(this.getBaseValue(baseIndex)).toUpperCase(Locale.US);
 	}
 	
 	// Get base value from base index
