@@ -34,8 +34,11 @@ public class BaseConverter extends Activity {
 	private Spinner fromSpinner;
 	private TextView fromText;
 	private TextView toText;
+	private HorizontalScrollView fromTextScroll; 
+	private HorizontalScrollView toTextScroll;
 	private int fromBase;
 	private int toBase;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class BaseConverter extends Activity {
 				{
 					clearFromDisplay();
 					updateLogic();
-					updateToDisplay();
+					updateToString();
 				}
 				return false;
 			}
@@ -74,7 +77,8 @@ public class BaseConverter extends Activity {
 				if (buttonCodes[position].length() == 1) {
 					writeDigit(getResources().getStringArray(R.array.buttons)[position]);
 					updateLogic();
-					updateToDisplay();
+					updateToString();
+					scrollRight();
 				} 
 				// delete button
 				else if (buttonCodes[position].equalsIgnoreCase(
@@ -82,14 +86,15 @@ public class BaseConverter extends Activity {
 				{
 					removeLastDigit();
 					updateLogic();
-					updateToDisplay();
+					updateToString();
+					scrollRight();
 				} 
 				// clear button
 				else if (buttonCodes[position].equalsIgnoreCase(
 						getApplicationContext().getResources().getString(R.string.button_clear))) {
 					clearFromDisplay();
 					updateLogic();
-					updateToDisplay();
+					updateToString();
 				}
 			}
 		});
@@ -101,10 +106,11 @@ public class BaseConverter extends Activity {
 		toSpinner = (Spinner) this.findViewById(R.id.spinnerbaseto);
 		fromText = (TextView) this.findViewById(R.id.textviewfrom);
 		toText = (TextView) this.findViewById(R.id.textviewto);
+		fromTextScroll = (HorizontalScrollView) this.findViewById(R.id.scroll1);
+		toTextScroll = (HorizontalScrollView) this.findViewById(R.id.scroll2);
 		
 		this.setDefaultValues();
 		
-		// Listener for setting from-base
 		fromSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			/**
 			 * Click listener for From-Spinner
@@ -113,7 +119,7 @@ public class BaseConverter extends Activity {
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int item, long longvalue) {
 				fromBase = item;
-				updateFromDisplay();
+				setFromString(logic.getValue(toBase));
 				disableNonbaseButtons();
 			}
 			@Override
@@ -122,7 +128,6 @@ public class BaseConverter extends Activity {
 			}
 		});
 		
-		// Listener for setting to-base
 		toSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			/**
 			 * Click listener for To-Spinner
@@ -131,7 +136,7 @@ public class BaseConverter extends Activity {
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int item, long longvalue) {
 				toBase = item;
-				updateToDisplay();
+				updateToString();
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -141,15 +146,15 @@ public class BaseConverter extends Activity {
 	}
 	
 	private void writeDigit(String digit) {
-		if (getDisplayString().equals("0")) {
-			fromText.setText(digit);
+		if (getFromString().equals("0")) {
+			setFromString(digit);
 		} else {
-			String newValue = getDisplayString().concat(digit);
+			String newValue = getFromString().concat(digit);
 			if (newValue.length() > 255) {
 				Toast.makeText(getApplicationContext(), this.getApplicationContext().
 						getResources().getString(R.string.high_number), Toast.LENGTH_SHORT).show();
 			} else {
-				fromText.setText(newValue);
+				setFromString(newValue);
 			}
 		}
 	}
@@ -157,19 +162,19 @@ public class BaseConverter extends Activity {
 	private void removeLastDigit() {
 		int length = fromText.getText().length();
 		if (length > 1) {
-			fromText.setText(fromText.getText().subSequence(0, length-1));
+			setFromString(fromText.getText().subSequence(0, length-1).toString());
 		} else clearFromDisplay();
 	}
 	
 	private void updateLogic() {
-		logic.setValue(getDisplayString(), fromBase);
+		logic.setValue(getFromString(), fromBase);
 	}
 	
 	private void clearFromDisplay() {
-		fromText.setText("0");
+		setFromString("0");
 	}
 	
-	private String getDisplayString() {
+	private String getFromString() {
 		return fromText.getText().toString();
 	}
 
@@ -208,7 +213,7 @@ public class BaseConverter extends Activity {
 		// binary
 		toBase = 0;
 		
-		fromText.setText("0");
+		setFromString("0");
 		toText.setText("0");
 	}
 	
@@ -236,19 +241,26 @@ public class BaseConverter extends Activity {
 	}
 	
 	private void scrollRight() {
-		HorizontalScrollView fromTextScroll = (HorizontalScrollView) this.findViewById(R.id.scroll1);
-		HorizontalScrollView toTextScroll = (HorizontalScrollView) this.findViewById(R.id.scroll2);
-		fromTextScroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
-		toTextScroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+		fromTextScroll.postDelayed(new Runnable(){
+			@Override
+			public void run() {
+				fromTextScroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+			}	
+		}, 50L);
+		toTextScroll.postDelayed(new Runnable(){
+			@Override
+			public void run() {
+				toTextScroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+			}	
+		}, 50L);
+		
 	}
 	
-	private void updateFromDisplay() {
-		fromText.setText(logic.getValue(fromBase));
-		scrollRight();
+	private void setFromString(String textToDisplay) {
+		fromText.setText(textToDisplay);
 	}
 	
-	private void updateToDisplay() {
+	private void updateToString() {
 		toText.setText(logic.getValue(toBase));
-		scrollRight();
 	}	
 }
