@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import com.elsoft.fbc.R;
 
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -36,6 +38,7 @@ public class BaseConverter extends Activity {
 	private TextView toText;
 	private HorizontalScrollView fromTextScroll; 
 	private HorizontalScrollView toTextScroll;
+	private SoundPool sp;
 	private int fromBase;
 	private int toBase;
 	
@@ -45,6 +48,8 @@ public class BaseConverter extends Activity {
 		super.onCreate(savedInstanceState);
 		this.initUI();
 		logic = new BaseLogic(this.getApplicationContext());
+		sp = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+		final int buttonSound = sp.load(BaseConverter.this, R.raw.button, 1);
 		GridView gridView = (GridView) this.findViewById(R.id.gridview1);
 		gridView.setAdapter(new ButtonAdapter(gridView, this, null));
 		gridView.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -72,6 +77,8 @@ public class BaseConverter extends Activity {
 			 */
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				// play sound
+				sp.play(buttonSound, 1, 1, 0, 0, 1);
 				String[] buttonCodes = getApplicationContext().getResources().getStringArray(R.array.buttons);
 				// normal digit/letter button (are all a single character long)
 				if (buttonCodes[position].length() == 1) {

@@ -107,7 +107,7 @@ public class ButtonAdapter extends BaseAdapter {
 		Button textButton = (Button) convertView.findViewById(R.id.textInside);
 		textButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, buttonHeightPx/2);
 		ImageButton imageButton = (ImageButton) convertView.findViewById(R.id.imageButtonInside);
-
+		
 		// delete button, display image
 		if (buttonCodes[pos].equalsIgnoreCase(
 				resourceGetter.getString(R.string.button_delete))) {
