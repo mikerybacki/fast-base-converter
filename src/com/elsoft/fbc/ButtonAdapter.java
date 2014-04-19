@@ -6,6 +6,7 @@ import com.elsoft.fbc.R;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
@@ -96,9 +97,17 @@ public class ButtonAdapter extends BaseAdapter {
 		// inflate the view
 		convertView = LayoutInflater.from(mContext).inflate(R.layout.button, null);
 
-		// set height for each button to 1/5th of gridview's height and exclude horizontal spacing
-		int buttonHeightPx = gridView.getHeight()/5 -  
-				(resourceGetter.getDimensionPixelSize(R.dimen.gridview_verticalspacing));
+		// exclude horizontal spacing from button height
+		int buttonHeightPx = -resourceGetter.getDimensionPixelSize(R.dimen.gridview_horizontalspacing);
+
+		if (resourceGetter.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			// set height for each button to 1/2 of gridview's height
+			buttonHeightPx += buttonHeightPx + gridView.getHeight()/2;
+		}
+		// set height for each button to 1/5th of gridview's height
+		else {
+			buttonHeightPx += gridView.getHeight()/5;
+		}
 		AbsListView.LayoutParams params = new AbsListView.LayoutParams(android.view.ViewGroup.
 				LayoutParams.MATCH_PARENT, buttonHeightPx);
 		convertView.setLayoutParams(params);
