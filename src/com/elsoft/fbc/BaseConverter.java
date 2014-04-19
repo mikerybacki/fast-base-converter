@@ -44,24 +44,21 @@ public class BaseConverter extends Activity {
 	private int fromBase;
 	private int toBase;
 	
+	private static final String FROM_BASE = "fromBase";
+	private static final String TO_BASE = "toBase";
+	private static final String FROM_STRING = "fromString";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.main);
+		
 		logic = new BaseLogic(this.getApplicationContext());
 		sp = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
 		this.initUI();
-		
-		// reload widget values on orientation change
-		if (savedInstanceState != null) {
-			fromBase = savedInstanceState.getInt("fromBase");
-			toBase = savedInstanceState.getInt("toBase");
-			this.setFromString(savedInstanceState.getString("fromString"));
-		} else {
-			fromBase = 2;
-			toBase = 0;
-			clearFromDisplay();
-		}
+		fromBase = 2;
+		toBase = 0;
+		clearFromDisplay();
 		this.updateLogic();
 		this.setWidgetValues();
 		this.setListeners();
@@ -71,27 +68,48 @@ public class BaseConverter extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 		// preserve widget values on orientation change
 		super.onSaveInstanceState(outState);
-		outState.putInt("fromBase", fromBase);
-        outState.putInt("toBase", toBase);
-        outState.putString("fromString", this.getFromString());
+		outState.putInt(FROM_BASE, fromBase);
+        outState.putInt(TO_BASE, toBase);
+        outState.putString(FROM_STRING, this.getFromString());
 		}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		// reload widget values on orientation change
+		fromBase = savedInstanceState.getInt(FROM_BASE);
+		toBase = savedInstanceState.getInt(TO_BASE);
+		this.redrawUIOnOrientationChange();
+		this.setFromString(savedInstanceState.getString(FROM_STRING));
+		this.updateLogic();
+		this.setWidgetValues();
+		this.setListeners();
+	}
 
 	private void initUI() {
-		setContentView(R.layout.main);
-		
-		// disable action bar if landscape view
-		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			this.getActionBar().hide();			
-		}
-
-		fromSpinner = (Spinner) this.findViewById(R.id.spinnerbasefrom);
-		toSpinner = (Spinner) this.findViewById(R.id.spinnerbaseto);
 		fromText = (TextView) this.findViewById(R.id.textviewfrom);
 		toText = (TextView) this.findViewById(R.id.textviewto);
 		fromTextScroll = (HorizontalScrollView) this.findViewById(R.id.scroll1);
 		toTextScroll = (HorizontalScrollView) this.findViewById(R.id.scroll2);
 		gridView = (GridView) this.findViewById(R.id.gridview1);
 		gridView.setAdapter(new ButtonAdapter(gridView, this, null));
+		redrawUIOnOrientationChange();
+	}
+	
+	private void redrawUIOnOrientationChange() {
+		// disable elements for portrait/landscape orientation
+		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			this.getActionBar().hide();
+			this.findViewById(R.id.basemenuportrait).setVisibility(View.GONE);
+			fromSpinner = (Spinner) this.findViewById(R.id.spinnerbasefromlandscape);
+			toSpinner = (Spinner) this.findViewById(R.id.spinnerbasetolandscape);
+		} else {
+			this.findViewById(R.id.spinnerbasefromlandscape).setVisibility(View.GONE);
+			this.findViewById(R.id.spinnerbasetolandscape).setVisibility(View.GONE);
+			fromSpinner = (Spinner) this.findViewById(R.id.spinnerbasefrom);
+			toSpinner = (Spinner) this.findViewById(R.id.spinnerbaseto);
+		}
+		
 	}
 
 	private void setListeners() {
