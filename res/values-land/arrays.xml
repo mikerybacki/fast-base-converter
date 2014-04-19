@@ -2,6 +2,16 @@
 <resources>
     <string-array name="buttons">
 	<!-- Row 1 -->
+		<item>1</item>
+	    <item>2</item>
+	    <item>3</item>
+    	<item>4</item>
+	    <item>5</item>
+	    <item>6</item>
+	    <item>7</item>
+        <item>8</item>
+	    <item>9</item>    
+	<!-- Row 2 -->
 	    <item>0</item>
 	    <item>A</item>
 	    <item>B</item>
@@ -11,15 +21,5 @@
 	    <item>F</item>
 	    <item>@string/button_delete</item>
         <item>@string/button_clear</item>
-	<!-- Row 2 -->
-        <item>1</item>
-	    <item>2</item>
-	    <item>3</item>
-    	<item>4</item>
-	    <item>5</item>
-	    <item>6</item>
-	    <item>7</item>
-        <item>8</item>
-	    <item>9</item>
 	</string-array>
 </resources>
