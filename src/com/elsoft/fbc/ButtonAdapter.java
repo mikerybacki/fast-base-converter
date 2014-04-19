@@ -117,7 +117,7 @@ public class ButtonAdapter extends BaseAdapter {
 			imageButton.setFocusable(false);
 			imageButton.setClickable(false);
 			imageButton.setImageDrawable(resourceGetter.getDrawable(R.drawable.input_delete));
-			setButtonSelector(imageButton, resourceGetter.getDrawable(R.layout.gridselector_red2));
+			setButtonSelector(imageButton, resourceGetter.getDrawable(R.layout.gridselector_delete));
 		
 		// dummy button, do not display at all
 		} else if (buttonCodes[pos].equalsIgnoreCase(
@@ -130,14 +130,14 @@ public class ButtonAdapter extends BaseAdapter {
 		} else if (buttonCodes[pos].equalsIgnoreCase(
 				resourceGetter.getString(R.string.button_clear))) {
 			textButton.setText(resourceGetter.getString(R.string.button_clear_text));
-			setButtonSelector(textButton, resourceGetter.getDrawable(R.layout.gridselector_red));
+			setButtonSelector(textButton, resourceGetter.getDrawable(R.layout.gridselector_clear));
 			
 		// normal buttons
 		} else {
 			textButton.setText(buttonText[pos]);
 			// set dark grey background for hexadecimal letter symbols
 			if (resourceGetter.getString(R.string.buttons_letters).contains(buttonCodes[pos])) {
-				setButtonSelector(textButton, resourceGetter.getDrawable(R.layout.gridselector_darkgrey));
+				setButtonSelector(textButton, resourceGetter.getDrawable(R.layout.gridselector_letters));
 			}
 		}
 		return convertView;

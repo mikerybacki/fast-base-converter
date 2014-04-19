@@ -6,7 +6,7 @@
     </style>
     
     <style name="TextFieldScroll" parent="@android:style/Widget.ScrollView">
-        <item name="android:background">@color/textfield_bg</item>
+        <item name="android:background">@layout/gradient_textfield</item>
         <item name="android:padding">@dimen/textfield_padding</item>
         <item name="android:scrollbars">horizontal</item>
         <item name="android:fillViewport">true</item>

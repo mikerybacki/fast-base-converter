@@ -7,7 +7,7 @@
     <string name="button_delete">DEL</string>
     <string name="button_dummy">DUM</string>
     <string name="buttons_letters">ABCDEF</string>
-	<string name="contact_data">Fast Base Converter v0.3, by mikeytr@outlook.com</string>
+	<string name="contact_data">Fast Base Converter v0.4, by mikeytr@outlook.com</string>
 	<string name="high_number">Number too high for current implementation.</string>
 	<string name="input_base">Input base</string>
 	<string name="ok">OK</string>

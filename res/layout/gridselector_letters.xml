@@ -2,7 +2,7 @@
     <item
         android:state_pressed="true"
         android:state_enabled="true"
-        android:drawable="@layout/gradient_orange" />
+        android:drawable="@layout/gradient_pressed" />
     <item 
-        android:drawable="@layout/gradient_red2" />
+        android:drawable="@layout/gradient_letters" />
  </selector>

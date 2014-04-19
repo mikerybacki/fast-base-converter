@@ -9,7 +9,7 @@
     >
     <ImageButton 
 	         android:id="@+id/imageButtonInside"
-	         android:background="@layout/gridselector_grey"
+	         android:background="@layout/gridselector_digits"
 	         android:layout_width="match_parent"
 	         android:layout_height="match_parent"
 	         android:gravity="center"
@@ -19,7 +19,7 @@
 	/>
     <Button 
 		android:id="@+id/textInside"
-		android:background="@layout/gridselector_grey"
+		android:background="@layout/gridselector_digits"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
