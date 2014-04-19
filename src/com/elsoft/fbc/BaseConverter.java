@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 public class BaseConverter extends Activity {
 
 	private BaseLogic logic;
+	private GridView gridView;
 	private Spinner toSpinner;
 	private Spinner fromSpinner;
 	private TextView fromText;
@@ -42,82 +44,57 @@ public class BaseConverter extends Activity {
 	private int fromBase;
 	private int toBase;
 	
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.initUI();
+
 		logic = new BaseLogic(this.getApplicationContext());
 		sp = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
-		final int buttonSound = sp.load(BaseConverter.this, R.raw.button, 1);
-		GridView gridView = (GridView) this.findViewById(R.id.gridview1);
-		gridView.setAdapter(new ButtonAdapter(gridView, this, null));
-		gridView.setOnItemLongClickListener(new OnItemLongClickListener() {
-			/**
-			 * Click listener for long clicks
-			 */
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-				// long click on "delete" button
-				String[] buttons = getApplicationContext().getResources().getStringArray(R.array.buttons);
-				if (buttons[position].equalsIgnoreCase(
-						getApplicationContext().getResources().getString(R.string.button_delete)))
-				{
-					clearFromDisplay();
-					updateLogic();
-					updateToString();
-				}
-				return false;
-			}
-			
-		});
-		gridView.setOnItemClickListener(new OnItemClickListener() {
-			/**
-			 * Click listener for Grid View
-			 */
-			@Override
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				// play sound
-				sp.play(buttonSound, 1, 1, 0, 0, 1);
-				String[] buttonCodes = getApplicationContext().getResources().getStringArray(R.array.buttons);
-				// normal digit/letter button (are all a single character long)
-				if (buttonCodes[position].length() == 1) {
-					writeDigit(getResources().getStringArray(R.array.buttons)[position]);
-					updateLogic();
-					updateToString();
-					scrollRight();
-				} 
-				// delete button
-				else if (buttonCodes[position].equalsIgnoreCase(
-						getApplicationContext().getResources().getString(R.string.button_delete))) 
-				{
-					removeLastDigit();
-					updateLogic();
-					updateToString();
-					scrollRight();
-				} 
-				// clear button
-				else if (buttonCodes[position].equalsIgnoreCase(
-						getApplicationContext().getResources().getString(R.string.button_clear))) {
-					clearFromDisplay();
-					updateLogic();
-					updateToString();
-				}
-			}
-		});
+		this.initUI();
+		
+		// reload widget values on orientation change
+		if (savedInstanceState != null) {
+			fromBase = savedInstanceState.getInt("fromBase");
+			toBase = savedInstanceState.getInt("toBase");
+			this.setFromString(savedInstanceState.getString("fromString"));
+		} else {
+			fromBase = 2;
+			toBase = 0;
+			clearFromDisplay();
+		}
+		this.updateLogic();
+		this.setWidgetValues();
+		this.setListeners();
 	}
 	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// preserve widget values on orientation change
+		super.onSaveInstanceState(outState);
+		outState.putInt("fromBase", fromBase);
+        outState.putInt("toBase", toBase);
+        outState.putString("fromString", this.getFromString());
+		}
+
 	private void initUI() {
 		setContentView(R.layout.main);
+		
+		// disable action bar if landscape view
+		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			this.getActionBar().hide();			
+		}
+
 		fromSpinner = (Spinner) this.findViewById(R.id.spinnerbasefrom);
 		toSpinner = (Spinner) this.findViewById(R.id.spinnerbaseto);
 		fromText = (TextView) this.findViewById(R.id.textviewfrom);
 		toText = (TextView) this.findViewById(R.id.textviewto);
 		fromTextScroll = (HorizontalScrollView) this.findViewById(R.id.scroll1);
 		toTextScroll = (HorizontalScrollView) this.findViewById(R.id.scroll2);
-		
-		this.setDefaultValues();
-		
+		gridView = (GridView) this.findViewById(R.id.gridview1);
+		gridView.setAdapter(new ButtonAdapter(gridView, this, null));
+	}
+
+	private void setListeners() {
 		fromSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			/**
 			 * Click listener for From-Spinner
@@ -152,6 +129,64 @@ public class BaseConverter extends Activity {
 				// do nothing
 			}
 		});
+		
+		gridView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			/**
+			 * Click listener for long clicks
+			 */
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+				// long click on "delete" button
+				String[] buttons = getApplicationContext().getResources().getStringArray(R.array.buttons);
+				if (buttons[position].equalsIgnoreCase(
+						getApplicationContext().getResources().getString(R.string.button_delete)))
+				{
+					clearFromDisplay();
+					updateLogic();
+					updateToString();
+				}
+				return false;
+			}
+			
+		});
+		
+		final int buttonSound = sp.load(BaseConverter.this, R.raw.button, 1);
+		
+		gridView.setOnItemClickListener(new OnItemClickListener() {
+			/**
+			 * Click listener for Grid View
+			 */
+			@Override
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				// play sound
+				sp.play(buttonSound, 1, 1, 0, 0, 1);
+				String[] buttonCodes = getApplicationContext().getResources().getStringArray(R.array.buttons);
+				// normal digit/letter button (are all a single character long)
+				if (buttonCodes[position].length() == 1) {
+					writeDigit(getResources().getStringArray(R.array.buttons)[position]);
+					updateLogic();
+					updateToString();
+					scrollRight();
+				} 
+				// delete button
+				else if (buttonCodes[position].equalsIgnoreCase(
+						getApplicationContext().getResources().getString(R.string.button_delete))) 
+				{
+					removeLastDigit();
+					updateLogic();
+					updateToString();
+					scrollRight();
+				} 
+				// clear button
+				else if (buttonCodes[position].equalsIgnoreCase(
+						getApplicationContext().getResources().getString(R.string.button_clear))) {
+					clearFromDisplay();
+					updateLogic();
+					updateToString();
+				}
+			}
+		});
+
 	}
 	
 	private void writeDigit(String digit) {
@@ -213,17 +248,14 @@ public class BaseConverter extends Activity {
 		return false;
 	}
 
-	private void setDefaultValues() {
+	private void setWidgetValues() {
 		// Set spinner values and base values
-		fromSpinner.setSelection(2);
 		// decimal
-		fromBase = 2;
-		toSpinner.setSelection(0);
+		fromSpinner.setSelection(fromBase);
 		// binary
-		toBase = 0;
-		
-		setFromString("0");
-		toText.setText("0");
+		toSpinner.setSelection(toBase);
+		// update displayed values
+		updateToString();
 	}
 	
 	// Enable only buttons for a certain base 
