@@ -1,7 +1,10 @@
-package com.elsoft.fbc;
+package com.emergy.fbc;
 
 import java.math.BigInteger;
 import java.util.Locale;
+
+import com.elsoft.fbc.R;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 

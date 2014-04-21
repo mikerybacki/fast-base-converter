@@ -1,12 +1,12 @@
-package com.elsoft.fbc.test;
+package com.emergy.fbc.test;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.elsoft.fbc.BaseLogic;
 import com.elsoft.fbc.R;
+import com.emergy.fbc.BaseLogic;
 
 import android.test.AndroidTestCase;
 import android.util.Log;
