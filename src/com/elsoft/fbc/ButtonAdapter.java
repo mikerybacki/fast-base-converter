@@ -31,6 +31,9 @@ public class ButtonAdapter extends BaseAdapter {
 	private Context mContext;
 	private GridView gridView;
 	
+	private static final int GRIDVIEW_LANDSCAPE_ROWS = 2;
+	private static final int GRIDVIEW_PORTRAIT_ROWS = 5;
+	
 	public ButtonAdapter(GridView gridView, Context context, ArrayList<String> list) {
 		this.gridView = gridView;
 		mContext = context;
@@ -102,11 +105,11 @@ public class ButtonAdapter extends BaseAdapter {
 
 		if (resourceGetter.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			// set height for each button to 1/2 of gridview's height
-			buttonHeightPx += buttonHeightPx + gridView.getHeight()/2;
+			buttonHeightPx += buttonHeightPx + gridView.getHeight() / GRIDVIEW_LANDSCAPE_ROWS;
 		}
 		// set height for each button to 1/5th of gridview's height
 		else {
-			buttonHeightPx += gridView.getHeight()/5;
+			buttonHeightPx += gridView.getHeight() / GRIDVIEW_PORTRAIT_ROWS;
 		}
 		AbsListView.LayoutParams params = new AbsListView.LayoutParams(android.view.ViewGroup.
 				LayoutParams.MATCH_PARENT, buttonHeightPx);

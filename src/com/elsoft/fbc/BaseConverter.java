@@ -44,9 +44,12 @@ public class BaseConverter extends Activity {
 	private int fromBase;
 	private int toBase;
 	
-	private static final String FROM_BASE = "fromBase";
-	private static final String TO_BASE = "toBase";
-	private static final String FROM_STRING = "fromString";
+	private static final String LABEL_FROM_BASE = "fromBase";
+	private static final String LABEL_TO_BASE = "toBase";
+	private static final String LABEL_FROM_STRING = "fromString";
+	private static final String FROM_STRING_DEFAULT_VALUE = "0";
+	private static final int FROM_BASE_DEFAULT_VALUE = 2;
+	private static final int TO_BASE_DEFAULT_VALUE = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +59,8 @@ public class BaseConverter extends Activity {
 		logic = new BaseLogic(this.getApplicationContext());
 		sp = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
 		this.initUI();
-		fromBase = 2;
-		toBase = 0;
+		fromBase = FROM_BASE_DEFAULT_VALUE;
+		toBase = TO_BASE_DEFAULT_VALUE;
 		clearFromDisplay();
 		this.updateLogic();
 		this.setWidgetValues();
@@ -68,19 +71,19 @@ public class BaseConverter extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 		// preserve widget values on orientation change
 		super.onSaveInstanceState(outState);
-		outState.putInt(FROM_BASE, fromBase);
-        outState.putInt(TO_BASE, toBase);
-        outState.putString(FROM_STRING, this.getFromString());
+		outState.putInt(LABEL_FROM_BASE, fromBase);
+        outState.putInt(LABEL_TO_BASE, toBase);
+        outState.putString(LABEL_FROM_STRING, this.getFromString());
 		}
 	
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		// reload widget values on orientation change
-		fromBase = savedInstanceState.getInt(FROM_BASE);
-		toBase = savedInstanceState.getInt(TO_BASE);
+		fromBase = savedInstanceState.getInt(LABEL_FROM_BASE);
+		toBase = savedInstanceState.getInt(LABEL_TO_BASE);
 		this.redrawUIOnOrientationChange();
-		this.setFromString(savedInstanceState.getString(FROM_STRING));
+		this.setFromString(savedInstanceState.getString(LABEL_FROM_STRING));
 		this.updateLogic();
 		this.setWidgetValues();
 		this.setListeners();
@@ -208,7 +211,7 @@ public class BaseConverter extends Activity {
 	}
 	
 	private void writeDigit(String digit) {
-		if (getFromString().equals("0")) {
+		if (getFromString().equals(FROM_STRING_DEFAULT_VALUE)) {
 			setFromString(digit);
 		} else {
 			String newValue = getFromString().concat(digit);
@@ -233,7 +236,7 @@ public class BaseConverter extends Activity {
 	}
 	
 	private void clearFromDisplay() {
-		setFromString("0");
+		setFromString(FROM_STRING_DEFAULT_VALUE);
 	}
 	
 	private String getFromString() {
@@ -312,7 +315,6 @@ public class BaseConverter extends Activity {
 				toTextScroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
 			}	
 		}, 50L);
-		
 	}
 	
 	private void setFromString(String textToDisplay) {
