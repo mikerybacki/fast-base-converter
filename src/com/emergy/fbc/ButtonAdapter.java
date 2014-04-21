@@ -2,7 +2,7 @@ package com.emergy.fbc;
 
 import java.util.ArrayList;
 
-import com.elsoft.fbc.R;
+import com.emergy.fbc.R;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.elsoft.fbc.R;
+import com.emergy.fbc.R;
 import com.emergy.fbc.BaseLogic;
 
 import android.test.AndroidTestCase;
-import android.util.Log;
 
 public class BaseLogicTest extends AndroidTestCase {
 

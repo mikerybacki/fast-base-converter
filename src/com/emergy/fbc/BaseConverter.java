@@ -2,7 +2,7 @@ package com.emergy.fbc;
 
 import java.util.Arrays;
 
-import com.elsoft.fbc.R;
+import com.emergy.fbc.R;
 
 import android.media.AudioManager;
 import android.media.SoundPool;
